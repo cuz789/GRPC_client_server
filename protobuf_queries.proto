@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package laureatequeries;
+
+// Define the service with 3 RPC methods for each query
+service LaureateQueryService {
+  rpc GetLaureatesByCategoryAndYearRange (CategoryYearRangeRequest) returns (TotalLaureatesResponse);
+  rpc GetLaureatesByKeyword (KeywordRequest) returns (TotalLaureatesResponse);  
+  rpc GetLaureateByName (NameRequest) returns (LaureatesResponse);             
+}
+
+// Request and Response for Query 1 (Category and Year Range)
+message CategoryYearRangeRequest {
+  string category = 1;    // Category like 'medicine'
+  int32 start_year = 2;   // Starting year for the range
+  int32 end_year = 3;     // Ending year for the range
+}
+
+message TotalLaureatesResponse {
+  int32 total = 1;        // Total number of laureates
+}
+
+// Request and Response for Query 2 (Keyword in Motivation)
+message KeywordRequest {
+  string keyword = 1;     // Keyword to search in the motivation
+}
+
+// Request and Response for Query 3 (Search by First and Last Name)
+message NameRequest {
+  string firstname = 1;   // First name of the laureate
+  string lastname = 2;    // Last name of the laureate
+}
+
+// Shared response for Query 3 (returns multiple laureates with details)
+message LaureatesResponse {
+  repeated Laureate laureates = 1;   // A list of laureates matching the query
+}
+
+message Laureate {
+  string firstname = 1;   // Laureate's first name
+  string surname = 2;     // Laureate's last name
+  int32 year = 3;        // The year they received the prize
+  string category = 4;    // The category of the prize
+  string motivation = 5;  // Motivation for receiving the prize
+}
